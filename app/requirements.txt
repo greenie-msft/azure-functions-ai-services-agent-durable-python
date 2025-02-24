@@ -6,3 +6,6 @@ azure-functions
 azure-ai-projects==1.0.0b2
 azure-storage-queue
 azure-identity
+azure-functions-durable
+azure-kusto-data
+azure-ai-documentintelligence

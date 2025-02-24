@@ -1,0 +1,133 @@
+/* ChatInterface.css */
+.page-container {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+/* ChatInterface.css */
+.chat-title-container {
+  height: 81px; /* Set the height to 50% of the viewport height */
+  max-width: 1024px;
+  margin-top: 50px;
+  vertical-align: middle;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  border-radius: 8px 8px 0px 0px; /* Only bottom corners are rounded */
+  overflow: hidden;
+  background: #F4F4F9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add drop shadow */
+}
+
+/* ChatInterface.css */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 85vh; /* Set the height to 50% of the viewport height */
+  max-width: 1024px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 0 0 8px 8px; /* Only bottom corners are rounded */
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add drop shadow */
+}
+
+.chat-history {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  background-color: #F4F4F9
+}
+
+.chat-message {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  max-width: 100%;
+  word-wrap: break-word; /* Ensure text wraps inside the chat messages */
+  overflow-wrap: break-word; /* Break long words to keep text inside the container */
+}
+
+.chat-message.user {
+  background-color: #96BECF;
+  align-self: flex-end;
+
+  pre{
+    word-wrap: break-word; /* Ensure text wraps inside the chat messages */
+    overflow-wrap: break-word; /* Break long words to keep text inside the container */
+  };
+}
+
+.chat-message.bot {
+  background-color: #E6F4E6;
+  align-self: flex-start;
+  word-wrap: break-word; /* Ensure text wraps inside the chat messages */
+  overflow-wrap: break-word; /* Break long words to keep text inside the container */
+
+  pre{
+    word-wrap: break-word; /* Ensure text wraps inside the chat messages */
+    overflow-wrap: break-word; /* Break long words to keep text inside the container */
+  };
+
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-right: 10px;
+}
+
+.chat-input button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #0056b3;
+  color: #fff;
+  cursor: pointer;
+}
+
+.chat-input button:hover {
+  background-color: #7DAAE6;
+}
+
+.chat-message.user::before {
+  content: "User: ";
+  font-weight: bold;
+}
+
+.chat-message.bot::before {
+  content: "GitHub Agent: ";
+  font-weight: bold;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #888;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  margin: 10px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+h1 {
+  color:  black;
+  padding-left: 25px;
+}
