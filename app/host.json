@@ -15,6 +15,13 @@
         "connectionStringName": "DTS_CONNECTION_STRING"
       },
       "hubName": "%TASKHUB_NAME%"
-    }
+    },
+    "queues": {
+      "maxPollingInterval": "00:00:02",
+      "visibilityTimeout" : "00:00:30",
+      "batchSize": 16,
+      "maxDequeueCount": 5,
+      "messageEncoding": "base64"
+  }
   }
 }

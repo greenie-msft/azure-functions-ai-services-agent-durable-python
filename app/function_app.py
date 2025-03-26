@@ -47,7 +47,6 @@ def initialize_client():
                             "type": "object",
                             "properties": {
                                 "organization": {"type": "string", "description": "The organization to find GitHub issues for."},
-                                "repo": {"type": "string", "description": "The repo to find GitHub issues for."},
                                 "time": {"type": "string", "description": "The specific time period for which the user is querying GitHub issues."}
                             },
                             "required": ["time"]
