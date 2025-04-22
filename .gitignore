@@ -6,6 +6,7 @@
 frontend/.env.production
 frontend/.env
 frontend/swa-cli.config.json
+myenv
 
 app/newenv
 app/local.settings.json
