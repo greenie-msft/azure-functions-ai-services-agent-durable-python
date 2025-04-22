@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import '../ChatInterface.css'; // Import the CSS file
+
+// Get API URL from environment variables
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:7071/api';
 
 const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false); // State to manage loading spinner
-
+  
   const sendMessage = async () => {
     if (input.trim() === '') return;
 
@@ -19,7 +22,7 @@ const ChatInterface = () => {
     setLoading(true); // Show loading spinner
 
     try {
-      const response = await axios.post('http://localhost:7071/api/prompt', JSON.stringify({ Prompt: input }), {
+      const response = await axios.post(`https://func-api-5som3lu6awirw.azurewebsites.net/api/prompt`, JSON.stringify({ Prompt: input }), {
         headers: {
           'Content-Type': 'application/json'
         }

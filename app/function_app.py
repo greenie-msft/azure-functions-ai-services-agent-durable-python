@@ -78,21 +78,36 @@ def initialize_client():
 
     return project_client, thread, agent
 
-@app.route(route="prompt", auth_level=func.AuthLevel.FUNCTION)
+@app.route(route="prompt", auth_level=func.AuthLevel.ANONYMOUS)
 def prompt(req: func.HttpRequest) -> func.HttpResponse:
     """
     HTTP trigger function to handle prompts and interact with the agent.
     """
     logging.info('Python HTTP trigger function processed a request.')
-
+    
+    # Get the origin from the request
+    origin = req.headers.get('Origin', '')
+    
+    # List of allowed origins - both local and production
+    allowed_origins = [
+        "http://localhost:3000",
+        "https://wonderful-wave-07c299e1e.6.azurestaticapps.net",
+        "https://stapp-web-5som3lu6awirw.azurestaticapps.net"
+    ]
+    
+    # Choose the correct origin for CORS response or use * for development
+    cors_origin = origin if origin in allowed_origins else "*"
+    
     # Handle OPTIONS request for CORS preflight
     if req.method == "OPTIONS":
         return func.HttpResponse(
             status_code=204,
             headers={
-                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Origin': cors_origin,
                 'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type'
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                'Access-Control-Allow-Credentials': 'true',
+                'Access-Control-Max-Age': '86400'
             }
         )
 
@@ -112,7 +127,7 @@ def prompt(req: func.HttpRequest) -> func.HttpResponse:
     logging.info(f"Created message, message ID: {message.id}")
 
     # Run the agent and monitor its status
-    run = project_client.agents.create_run(thread_id=thread.id, assistant_id=agent.id)
+    run = project_client.agents.create_run(thread_id=thread.id, agent_id=agent.id)
     
     while run.status in ["queued", "in_progress", "requires_action"]:
         time.sleep(1)
@@ -127,22 +142,42 @@ def prompt(req: func.HttpRequest) -> func.HttpResponse:
         logging.error(f"Run failed: {run.last_error}")
 
     # Get messages from the assistant thread and retrieve the last message from the assistant
-    messages = project_client.agents.get_messages(thread_id=thread.id)
-    logging.info(f"Messages: {messages}")
-
-    last_msg = messages.get_last_text_message_by_sender("assistant")
+    messages = project_client.agents.list_messages(thread_id=thread.id)
+    logging.info(f"Messages: {messages}")    # Get the last message from the agent
+    last_msg = None
+    for data_point in messages.data:
+        if data_point.role == "assistant":
+            last_msg = data_point.content[-1]
+            print(f"Last Message: {last_msg.text.value}")
+            break
     
-    if last_msg:
-        logging.info(f"Last Message: {last_msg.text.value}")
-
     # Delete the agent once done
     project_client.agents.delete_agent(agent.id)
     
+    # Get the origin from the request for response
+    origin = req.headers.get('Origin', '')
+    
+    # List of allowed origins - both local and production
+    allowed_origins = [
+        "http://localhost:3000",
+        "https://wonderful-wave-07c299e1e.6.azurestaticapps.net",
+        "https://stapp-web-5som3lu6awirw.azurestaticapps.net"
+    ]
+    
+    # Choose the correct origin for CORS response
+    cors_origin = origin if origin in allowed_origins else "*"
+    
+    # Prepare response with proper CORS headers
+    response_message = {"message": last_msg.text.value if last_msg else "No response generated"}
+    
     return func.HttpResponse(
-        json.dumps({"message": last_msg.text.value}),
+        json.dumps(response_message),
         mimetype="application/json",
         headers={
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': cors_origin,
+            'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Allow-Credentials': 'true'
         }
     )
 

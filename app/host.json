@@ -8,20 +8,24 @@
       }
     }
   },
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle.Preview",
+    "version": "[4.29.0, 5.0.0)"
+  },
   "extensions": {
     "durableTask": {
+      "hubName": "%TASKHUB_NAME%",
       "storageProvider": {
         "type": "azureManaged",
         "connectionStringName": "DTS_CONNECTION_STRING"
       },
-      "hubName": "%TASKHUB_NAME%"
-    },
-    "queues": {
-      "maxPollingInterval": "00:00:02",
-      "visibilityTimeout" : "00:00:30",
-      "batchSize": 16,
-      "maxDequeueCount": 5,
-      "messageEncoding": "base64"
-  }
+      "queues": {
+        "maxPollingInterval": "00:00:02",
+        "visibilityTimeout": "00:00:30",
+        "batchSize": 16,
+        "maxDequeueCount": 5,
+        "messageEncoding": "base64"
+      }
+    }
   }
 }

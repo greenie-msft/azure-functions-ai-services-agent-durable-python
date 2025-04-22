@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+frontend/.env.production
+frontend/.env
+frontend/swa-cli.config.json
+
 app/newenv
 app/local.settings.json
 .DS_Store

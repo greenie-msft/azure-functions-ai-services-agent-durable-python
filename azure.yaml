@@ -8,6 +8,10 @@ services:
     project: ./app/
     language: python
     host: function
+  web:
+    project: ./frontend/
+    language: js
+    host: staticwebapp
 hooks:
   postprovision:
     windows:
